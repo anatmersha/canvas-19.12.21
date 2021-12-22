@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="myCanvas"></canvas>
+    <script>
+        const myCanvas = document.getElementById("myCanvas");
+        const ctxt = myCanvas.getContext("2d");
+        myCanvas.width = window.innerWidth;
+        myCanvas.height = window.innerHeight;
+
+            // 1
+            ctxt.beginPath();
+            ctxt.fillStyle = "black";
+            ctxt.fillRect(0, 0, 50, 50);
+            // 2
+            ctxt.beginPath();
+            ctxt.fillStyle = "red";
+            ctxt.fillRect(60, 60, 50, 50);
+            // 3
+            const circle1 = {x:100, y:100, r:30, sa:0, ea:2 * Math.PI};
+            ctxt.beginPath();
+            ctxt.arc(circle1.x, circle1.y, circle1.r, circle1.sa, circle1.ea)
+            ctxt.fillStyle = "red";
+            ctxt.fill(); 
+            // // 4
+            const circle2 = {x:200, y:200, r:50, sa:0, ea:2 * Math.PI};
+            ctxt.beginPath();
+            ctxt.arc(circle2.x, circle2.y, circle2.r, circle2.sa, circle2.ea);
+            ctxt.fillStyle = "green";
+            ctxt.fill();
+            // // 5
+            const circle3 = {x: 300, y: 300, r: 40, sa: 0, ea: 2* Math.PI};
+            ctxt.beginPath();
+            ctxt.arc(circle3.x, circle3.y, circle3.r, circle3.sa, circle3.ea);
+            ctxt.fillStyle = "green";
+            ctxt.fill();
+            // // 
+            const circle4 = {x:500, y:500, r:40, sa: 0, ea: 2 * Math.PI};
+            ctxt.beginPath();
+            ctxt.arc(circle4.x, circle4.y, circle4.r, circle4.sa, circle4.ea);
+            ctxt.fillStyle = "green";
+            ctxt.fill();
+            // // 6
+            const square1 = {x:100, y:50, w:250, h: 250, c: "yellow"};
+            const square2 = {x:100, y:350, w:250, h: 250, c: "red"};
+            const square3 = {x:100, y:650, w:250, h: 250, c: "purple"};
+            const array = [square1, square2, square3];
+
+            for(let i = 0; i < array.length; i++){
+                ctxt.beginPath();
+                ctxt.fillStyle = "yellow";
+                ctxt.fillRect(array[i].x, array[i].y, array[i].w, array[i].h);
+                ctxt.fill();
+            }
+
+            function Draw(){
+                requestAnimationFrame(Draw)
+                for(let i = 0; i < array.length; i++) {
+                    if(array[i].x < myCanvas.width - array[i].w){
+                        console.log("hi");
+                        ctxt.clearRect(array[i].x, array[i].y, array[i].w, array[i].h)
+                        array[i].x+=20;
+                        ctxt.beginPath();
+                        ctxt.fillStyle = array[i].c;
+                        ctxt.fillRect(array[i].x, array[i].y, array[i].w, array[i].h);
+                    }
+                }
+            }
+            Draw()
+
+            // // // 7
+            const floor = {x: 0, y: myCanvas.height - 200, w: myCanvas.width, h: 200};
+
+            ctxt.fillStyle = "pink";
+            ctxt.fillRect(floor.x, floor.y, floor.w, floor.h);
+            // // // 8
+
+            let player = {x: 0, y: 700 - floor.h, w: 150, h: 150};
+            ctxt.beginPath();
+            ctxt.fillStyle = "purple";
+            ctxt.fillRect(player.x, player.y, player.w, player.h);
+
+            // // // 9
+            window.onkeydown = (e) => {
+                console.log(e.keyCode);
+                const keyPressed = e.keyCode;
+                if(keyPressed === 38) {
+                    Jump();
+                }
+            }
+
+            function Jump() {
+                ctxt.clearRect(player.x, player.y, player.w, player.h)
+                ctxt.beginPath();
+                ctxt.fillStyle = "purple";
+                ctxt.fillRect(player.x, player.y - 100, player.w, player.h);
+                    setTimeout(()=> {
+                        ctxt.clearRect(player.x, player.y - 100, player.w, player.h)
+                        ctxt.beginPath();
+                        ctxt.fillStyle = "purple";
+                        ctxt.fillRect(player.x, player.y, player.w, player.h);
+                    }, 150)
+            }
+            
+            // // 10
+            for(let i=0; i<10; i++){
+                let X = Math.round(Math.random() * (myCanvas.width - 50));
+                let Y = Math.round(Math.random() * (myCanvas.height - 50));
+                ctxt.clearRect(X, Y, 50, 50)
+                ctxt.beginPath();
+                ctxt.fillStyle = "yellow";
+                ctxt.fillRect(X, Y, 50, 50);
+            }
+
+            // // 11
+            for(let i=0; i<10; i++) {
+            let R = Math.round(Math.random() * 50);
+            let X = Math.round(Math.random() * (myCanvas.width - R));
+            let Y = Math.round(Math.random() * (myCanvas.height - 50));
+            ctxt.beginPath();
+            ctxt.arc(X, Y, R, 0, 2*Math.PI);
+            ctxt.fillStyle = "green";
+            ctxt.fill();
+            }
+
+            // // 12
+            for(let i=0; i<10; i++) {
+            let R = Math.round(Math.random() * 50);
+            let X = Math.round(Math.random() * (myCanvas.width - R));
+            let Y = Math.round(Math.random() * (myCanvas.height - 50));
+            let colors = ["blue", "red", "yellow", "pink", "purple", "orange", "black", "browm", "grey", "green"];
+            let C = colors[Math.floor(Math.random() * colors.length)];
+            ctxt.beginPath();
+            ctxt.arc(X, Y, R, 0, 2*Math.PI);
+            ctxt.fillStyle = C;
+            ctxt.fill();
+            }
+
+            // // 13
+            ctxt.beginPath();
+            ctxt.arc(myCanvas.width / 2, 400, 250, 0, 2*Math.PI);
+            ctxt.fillStyle = "gold";
+            ctxt.fill();
+
+            ctxt.beginPath();
+            ctxt.arc(myCanvas.width / 2 - 100, 320, 50, 0, 2*Math.PI);
+            ctxt.fillStyle = "black";
+            ctxt.fill();
+            ctxt.beginPath();
+            ctxt.arc(myCanvas.width / 2 + 100 , 320, 50, 0, 2*Math.PI);
+            ctxt.fillStyle = "black";
+            ctxt.fill();
+            ctxt.beginPath();
+            ctxt.arc(myCanvas.width / 2 , 480, 120, 0, 1*Math.PI);
+            ctxt.fillStyle = "black";
+            ctxt.fill();
+
+    </script>
+</body>
+</html>
